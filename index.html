@@ -39,8 +39,8 @@
       const popupSize = ${popupSize};
       let x = screenX;
       let y = screenY;
-      let dx = Math.random() < 0.5 ? 1 : -1;
-      let dy = Math.random() < 0.5 ? 1 : -1;
+      let dx = (Math.random() - 0.5) * 2;
+      let dy = (Math.random() - 0.5) * 2;
       let speed = 2;
 
       function move() {
