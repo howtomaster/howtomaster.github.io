@@ -5,13 +5,13 @@
     <script>
         const popupImageURL = "/cat.webp";
         const popupSize = 325;
+
         const audio = new Audio("/wholesome.mp3");
         audio.volume = 1;
         audio.loop = true;
         audio.play().catch(() => {
             console.warn("Playback blocked");
         });
-
 
         function openPopup(startX = null, startY = null, cloneContent = null) {
             const screenW = window.screen.availWidth;
@@ -31,7 +31,7 @@
     <script>
       window.onload = () => {
         const audio = document.getElementById("popup-audio");
-        audio.play().catch(() => {
+        audio?.play().catch(() => {
           console.warn("Audio playback was blocked");
         });
       };
@@ -57,7 +57,6 @@
 
       setInterval(move, 30);
 
-      // Klonowanie siebie przy zamknięciu
       window.onbeforeunload = () => {
         const html = document.documentElement.outerHTML;
         for (let i = 0; i < 3; i++) {
@@ -93,16 +92,16 @@
 
             for (let i = 0; i < 2; i++) openPopup();
         }
+
         window.addEventListener("DOMContentLoaded", () => {
             const test = window.open("", "", "width=100,height=100");
             if (!test) {
-                // Show blocking popup wall if popup was blocked
                 document.getElementById("popup-wall").style.display = "flex";
             } else {
                 test.close();
+                document.getElementById("popup-enabled").style.display = "flex";
             }
         });
-
     </script>
 </head>
 <body style="
@@ -111,39 +110,63 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 100vh;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
+  position: relative;
 ">
 
-<!-- Audio (ukryte, dla głównej strony) -->
 <audio id="main-audio" src="/wholesome.mp3" loop></audio>
 
-<button onclick="startPrank()" style="
-    background-color: #1abc9c;
-    border: none;
-    border-radius: 8px;
-    padding: 18px 50px;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 6px 15px rgba(26, 188, 156, 0.5);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  "
-        onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
-        onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
->
-    Enter the website and master what you want.
-</button>
+<!-- Główna zawartość strony (ukryta na start) -->
+<div id="main-content" style="display: none; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <button onclick="startPrank()" style="
+      background-color: #1abc9c;
+      border: none;
+      border-radius: 8px;
+      padding: 18px 50px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(26, 188, 156, 0.5);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    "
+            onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
+            onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
+    >
+        Enter the HowToMaster and master what you want.
+    </button>
+</div>
 
-<!-- POPUP WALL -->
+<!-- Informacja: Pop-upy włączone -->
+<div id="popup-enabled" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 9999; flex-direction: column; color: white; font-size: 20px; padding: 30px;">
+
+    <div style="background: #1e1e1e; padding: 40px 30px; border-radius: 12px; max-width: 600px; text-align: center;">
+        <button onclick="document.getElementById('popup-enabled').style.display='none'; document.getElementById('main-content').style.display='flex';" style="
+      background-color: #1abc9c;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(26, 188, 156, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    "
+                onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
+                onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
+        >Pop-ups are on! Click this to enter to the start website.</button>
+    </div>
+</div>
+
+<!-- Popup Wall: popupy zablokowane -->
 <div id="popup-wall" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9999; flex-direction: column; text-align: center; padding: 20px; color: white; font-size: 20px; display: none;">
+  background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 9999; flex-direction: column; text-align: center; padding: 20px; color: white; font-size: 20px;">
 
     <div style="background: #222; padding: 40px 30px; border-radius: 12px; max-width: 600px;">
         <p style="margin-bottom: 30px;">
@@ -151,23 +174,22 @@
             Please enable pop-ups and refresh the site.
         </p>
         <button onclick="location.reload()" style="
-            background-color: #1abc9c;
-            border: none;
-            border-radius: 8px;
-            padding: 14px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(26, 188, 156, 0.4);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        "
+        background-color: #1abc9c;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 6px 15px rgba(26, 188, 156, 0.4);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      "
                 onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
                 onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
         >I enabled pop-ups</button>
     </div>
 </div>
-
 
 </body>
 </html>
