@@ -27,9 +27,14 @@
 <html>
   <head><title>IDIOT</title></head>
   <body style="margin:0; background:black; color:white; text-align:center; overflow:hidden;">
-    <audio id="main-audio" src="/wholesome.mp3" loop></audio>
     <img src="${popupImageURL}" style="width:100%;">
     <script>
+      window.onload = () => {
+        const audio = document.getElementById("popup-audio");
+        audio?.play().catch(() => {
+          console.warn("Audio playback was blocked");
+        });
+      };
 
       const popupSize = ${popupSize};
       let x = screenX;
@@ -109,7 +114,7 @@
   position: relative;
 ">
 
-
+<audio id="main-audio" src="/wholesome.mp3" loop></audio>
 
 <!-- Główna zawartość strony (ukryta na start) -->
 <div id="main-content" style="display: none; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
