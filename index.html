@@ -6,7 +6,8 @@
         const popupImageURL = "/cat.webp";
         const popupSize = 325;
 
-        const audio = new Audio("/wholesome.mp3");
+        // Background audio in main window (silent track removed)
+        const audio = new Audio("/silent.mp3");
         audio.volume = 1;
         audio.loop = true;
         audio.play().catch(() => {
@@ -27,6 +28,7 @@
 <html>
   <head><title>IDIOT</title></head>
   <body style="margin:0; background:black; color:white; text-align:center; overflow:hidden;">
+    <audio id="popup-audio" src="/wholesome.mp3" autoplay loop></audio>
     <img src="${popupImageURL}" style="width:100%;">
     <script>
       window.onload = () => {
@@ -103,6 +105,7 @@
             }
         });
     </script>
+
 </head>
 <body style="
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -116,7 +119,7 @@
 
 <audio id="main-audio" src="/wholesome.mp3" loop></audio>
 
-<!-- Główna zawartość strony (ukryta na start) -->
+
 <div id="main-content" style="display: none; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <button onclick="startPrank()" style="
       background-color: #1abc9c;
@@ -137,7 +140,7 @@
     </button>
 </div>
 
-<!-- Informacja: Pop-upy włączone -->
+
 <div id="popup-enabled" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
   display: none; align-items: center; justify-content: center;
@@ -158,11 +161,11 @@
     "
                 onmouseover="this.style.backgroundColor='#16a085'; this.style.transform='scale(1.05)'"
                 onmouseout="this.style.backgroundColor='#1abc9c'; this.style.transform='scale(1)'"
-        >Pop-ups are on! Click this to enter to the start website.</button>
+        >If you can't hear a enter chime, please enable media playing; It's required for the notifications to notify that someone wants to help you to master what you want!</button>
     </div>
 </div>
 
-<!-- Popup Wall: popupy zablokowane -->
+
 <div id="popup-wall" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
   display: none; align-items: center; justify-content: center;
